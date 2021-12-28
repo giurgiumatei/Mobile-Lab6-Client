@@ -10,14 +10,14 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.fragment_item_list.*
+import kotlinx.android.synthetic.main.fragment_individual_list.*
 import ro.ubbcluj.cs.matei.individuals.R
 import ro.ubbcluj.cs.matei.individuals.auth.data.AuthRepository
 import ro.ubbcluj.cs.matei.individuals.core.TAG
 
-class ItemListFragment : Fragment() {
-    private lateinit var itemListAdapter: ItemListAdapter
-    private lateinit var itemsModel: ItemListViewModel
+class IndividualListFragment : Fragment() {
+    private lateinit var individualListAdapter: IndividualListAdapter
+    private lateinit var individualsModel: IndividualListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,7 +28,7 @@ class ItemListFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_item_list, container, false)
+        return inflater.inflate(R.layout.fragment_individual_list, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -38,33 +38,33 @@ class ItemListFragment : Fragment() {
             findNavController().navigate(R.id.fragment_login)
             return;
         }
-        setupItemList()
+        setupIndividualList()
         fab.setOnClickListener {
-            Log.v(TAG, "add new item")
-            findNavController().navigate(R.id.fragment_item_edit)
+            Log.v(TAG, "add new individual")
+            findNavController().navigate(R.id.fragment_individual_edit)
         }
     }
 
-    private fun setupItemList() {
-        itemListAdapter = ItemListAdapter(this)
-        item_list.adapter = itemListAdapter
-        itemsModel = ViewModelProvider(this).get(ItemListViewModel::class.java)
-        itemsModel.items.observe(viewLifecycleOwner, { items ->
-            Log.v(TAG, "update items")
-            itemListAdapter.items = items
+    private fun setupIndividualList() {
+        individualListAdapter = IndividualListAdapter(this)
+        individual_list.adapter = individualListAdapter
+        individualsModel = ViewModelProvider(this).get(IndividualListViewModel::class.java)
+        individualsModel.individuals.observe(viewLifecycleOwner, { individuals ->
+            Log.v(TAG, "update individuals")
+            individualListAdapter.individuals = individuals
         })
-        itemsModel.loading.observe(viewLifecycleOwner, { loading ->
+        individualsModel.loading.observe(viewLifecycleOwner, { loading ->
             Log.i(TAG, "update loading")
             progress.visibility = if (loading) View.VISIBLE else View.GONE
         })
-        itemsModel.loadingError.observe(viewLifecycleOwner, { exception ->
+        individualsModel.loadingError.observe(viewLifecycleOwner, { exception ->
             if (exception != null) {
                 Log.i(TAG, "update loading error")
                 val message = "Loading exception ${exception.message}"
                 Toast.makeText(activity, message, Toast.LENGTH_SHORT).show()
             }
         })
-        itemsModel.refresh()
+        individualsModel.refresh()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -74,7 +74,7 @@ class ItemListFragment : Fragment() {
     }
 
     private fun changeViewPositionByObjectAnimator() {
-        ObjectAnimator.ofFloat(view, "translationX", 200f).apply {
+        ObjectAnimator.ofFloat(view, "translationY", 50f).apply {
             duration = 5000
             start()
         }

@@ -8,19 +8,19 @@ import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import ro.ubbcluj.cs.matei.individuals.todo.data.Movie
+import ro.ubbcluj.cs.matei.individuals.todo.data.Individual
 
-@Database(entities = [Movie::class], version = 1)
-abstract class TodoDatabase : RoomDatabase() {
+@Database(entities = [Individual::class], version = 1)
+abstract class LocalDatabase : RoomDatabase() {
 
-    abstract fun itemDao(): ItemDao
+    abstract fun individualDao(): IndividualDao
 
     companion object {
         @Volatile
-        private var INSTANCE: TodoDatabase? = null
+        private var INSTANCE: LocalDatabase? = null
 
         //        @kotlinx.coroutines.InternalCoroutinesApi()
-        fun getDatabase(context: Context, scope: CoroutineScope): TodoDatabase {
+        fun getDatabase(context: Context, scope: CoroutineScope): LocalDatabase {
             val inst = INSTANCE
             if (inst != null) {
                 return inst
@@ -28,8 +28,8 @@ abstract class TodoDatabase : RoomDatabase() {
             val instance =
                 Room.databaseBuilder(
                     context.applicationContext,
-                    TodoDatabase::class.java,
-                    "todo_db"
+                    LocalDatabase::class.java,
+                    "local_db"
                 )
                     .addCallback(WordDatabaseCallback(scope))
                     .build()
@@ -44,16 +44,16 @@ abstract class TodoDatabase : RoomDatabase() {
                 super.onOpen(db)
                 INSTANCE?.let { database ->
                     scope.launch(Dispatchers.IO) {
-                        populateDatabase(database.itemDao())
+                        populateDatabase(database.individualDao())
                     }
                 }
             }
         }
 
-        suspend fun populateDatabase(itemDao: ItemDao) {
-            itemDao.deleteAll()
-            val item = Movie("1", "Hello", "", "", false,  0)
-            itemDao.insert(item)
+        suspend fun populateDatabase(individualDao: IndividualDao) {
+            individualDao.deleteAll()
+            val item = Individual("1", "Gion", "21", "Cluj", false,  2001)
+            individualDao.insert(item)
         }
     }
 

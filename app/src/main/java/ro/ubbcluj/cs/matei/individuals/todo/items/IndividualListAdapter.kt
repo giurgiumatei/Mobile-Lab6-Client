@@ -9,17 +9,17 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.view_item.view.*
+import kotlinx.android.synthetic.main.view_individual.view.*
 import ro.ubbcluj.cs.matei.individuals.R
 import ro.ubbcluj.cs.matei.individuals.core.TAG
-import ro.ubbcluj.cs.matei.individuals.todo.data.Movie
-import ro.ubbcluj.cs.matei.individuals.todo.item.ItemEditFragment
+import ro.ubbcluj.cs.matei.individuals.todo.data.Individual
+import ro.ubbcluj.cs.matei.individuals.todo.item.IndividualEditFragment
 
-class ItemListAdapter(
+class IndividualListAdapter(
     private val fragment: Fragment
-) : RecyclerView.Adapter<ItemListAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<IndividualListAdapter.ViewHolder>() {
 
-    var items = emptyList<Movie>()
+    var individuals = emptyList<Individual>()
         set(value) {
             field = value
             notifyDataSetChanged();
@@ -29,29 +29,29 @@ class ItemListAdapter(
 
     init {
         onItemClick = View.OnClickListener { view ->
-            val item = view.tag as Movie
-            fragment.findNavController().navigate(R.id.fragment_item_edit, Bundle().apply {
-                putString(ItemEditFragment.ITEM_ID, item._id)
+            val item = view.tag as Individual
+            fragment.findNavController().navigate(R.id.fragment_individual_edit, Bundle().apply {
+                putString(IndividualEditFragment.INDIVIDUAL_ID, item._id)
             })
         }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.view_item, parent, false)
+            .inflate(R.layout.view_individual, parent, false)
         Log.v(TAG, "onCreateViewHolder")
         return ViewHolder(view)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Log.v(TAG, "onBindViewHolder $position")
-        val item = items[position]
-        holder.itemView.tag = item
-        holder.textView.text = item.title
+        val individual = individuals[position]
+        holder.itemView.tag = individual
+        holder.textView.text = individual.name
         holder.itemView.setOnClickListener(onItemClick)
     }
 
-    override fun getItemCount() = items.size
+    override fun getItemCount() = individuals.size
 
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         val textView: TextView = view.text

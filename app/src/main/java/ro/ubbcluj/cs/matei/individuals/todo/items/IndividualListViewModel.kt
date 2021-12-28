@@ -4,26 +4,26 @@ import android.app.Application
 import android.util.Log
 import androidx.lifecycle.*
 import kotlinx.coroutines.launch
-import ro.ubbcluj.cs.matei.individuals.todo.data.local.TodoDatabase
+import ro.ubbcluj.cs.matei.individuals.todo.data.local.LocalDatabase
 import ro.ubbcluj.cs.matei.individuals.core.Result
 import ro.ubbcluj.cs.matei.individuals.core.TAG
-import ro.ubbcluj.cs.matei.individuals.todo.data.Movie
-import ro.ubbcluj.cs.matei.individuals.todo.data.ItemRepository
+import ro.ubbcluj.cs.matei.individuals.todo.data.Individual
+import ro.ubbcluj.cs.matei.individuals.todo.data.IndividualRepository
 
-class ItemListViewModel(application: Application) : AndroidViewModel(application) {
+class IndividualListViewModel(application: Application) : AndroidViewModel(application) {
     private val mutableLoading = MutableLiveData<Boolean>().apply { value = false }
     private val mutableException = MutableLiveData<Exception>().apply { value = null }
 
-    val items: LiveData<List<Movie>>
+    val individuals: LiveData<List<Individual>>
     val loading: LiveData<Boolean> = mutableLoading
     val loadingError: LiveData<Exception> = mutableException
 
-    val itemRepository: ItemRepository
+    val individualRepository: IndividualRepository
 
     init {
-        val itemDao = TodoDatabase.getDatabase(application, viewModelScope).itemDao()
-        itemRepository = ItemRepository(itemDao)
-        items = itemRepository.items
+        val individualDao = LocalDatabase.getDatabase(application, viewModelScope).individualDao()
+        individualRepository = IndividualRepository(individualDao)
+        individuals = individualRepository.individuals
     }
 
     fun refresh() {
@@ -31,7 +31,7 @@ class ItemListViewModel(application: Application) : AndroidViewModel(application
             Log.v(TAG, "refresh...");
             mutableLoading.value = true
             mutableException.value = null
-            when (val result = itemRepository.refresh()) {
+            when (val result = individualRepository.refresh()) {
                 is Result.Success -> {
                     Log.d(TAG, "refresh succeeded");
                 }

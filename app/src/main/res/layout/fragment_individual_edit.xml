@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".todo.item.ItemEditFragment">
+    tools:context=".todo.item.IndividualEditFragment">
 
     <ProgressBar
         android:id="@+id/progress"
@@ -14,37 +14,40 @@
         android:visibility="gone" />
 
     <EditText
-        android:id="@+id/edit_title"
+        android:id="@+id/edit_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text=""
-        android:hint="Title"/>
+        android:hint="Name"
+        android:text="" />
 
     <EditText
-        android:id="@+id/edit_producer"
+        android:id="@+id/edit_age"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="75dp"
-        android:text=""
-        android:hint="Producer"/>
+        android:hint="Age"
+        android:minHeight="48dp"
+        android:text="" />
 
     <EditText
-        android:id="@+id/edit_description"
+        android:id="@+id/edit_hometown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="150dp"
-        android:text=""
-        android:hint="Description"/>
+        android:hint="Hometown"
+        android:minHeight="48dp"
+        android:text="" />
 
     <CheckBox
-        android:id="@+id/edit_awardNominated"
+        android:id="@+id/edit_isVaccinated"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="250dp"
-        android:text="Award Nominated" />
+        android:minHeight="48dp"
+        android:text="Is Vaccinated" />
 
     <DatePicker
-        android:id="@+id/edit_releaseDate"
+        android:id="@+id/edit_yearOfBirth"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="350dp"
@@ -56,6 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|end"
         android:layout_margin="@dimen/fab_margin"
-        app:srcCompat="@android:drawable/ic_menu_save" />
+        app:srcCompat="@android:drawable/ic_menu_save"
+        tools:ignore="SpeakableTextPresentCheck" />
 
 </FrameLayout>

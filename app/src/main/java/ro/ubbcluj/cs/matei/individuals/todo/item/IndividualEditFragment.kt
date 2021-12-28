@@ -9,26 +9,26 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.fragment_item_edit.*
+import kotlinx.android.synthetic.main.fragment_individual_edit.*
 import ro.ubbcluj.cs.matei.individuals.R
 import ro.ubbcluj.cs.matei.individuals.core.TAG
-import ro.ubbcluj.cs.matei.individuals.todo.data.Movie
+import ro.ubbcluj.cs.matei.individuals.todo.data.Individual
 
-class ItemEditFragment : Fragment() {
+class IndividualEditFragment : Fragment() {
     companion object {
-        const val ITEM_ID = "ITEM_ID"
+        const val INDIVIDUAL_ID = "INDIVIDUAL_ID"
     }
 
-    private lateinit var viewModel: ItemEditViewModel
-    private var itemId: String? = null
-    private var movie: Movie? = null
+    private lateinit var viewModel: IndividualEditViewModel
+    private var individualId: String? = null
+    private var individual: Individual? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         Log.v(TAG, "onCreate")
         arguments?.let {
-            if (it.containsKey(ITEM_ID)) {
-                itemId = it.getString(ITEM_ID).toString()
+            if (it.containsKey(INDIVIDUAL_ID)) {
+                individualId = it.getString(INDIVIDUAL_ID).toString()
             }
         }
 
@@ -39,7 +39,7 @@ class ItemEditFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         Log.v(TAG, "onCreateView")
-        return inflater.inflate(R.layout.fragment_item_edit, container, false)
+        return inflater.inflate(R.layout.fragment_individual_edit, container, false)
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -47,34 +47,34 @@ class ItemEditFragment : Fragment() {
         Log.v(TAG, "onActivityCreated")
         setupViewModel()
         fab.setOnClickListener {
-            Log.v(TAG, "save item")
-            val i = movie
-            if (i != null) {
-                if (edit_title.text == null) {
-                    i.title = "none";
+            Log.v(TAG, "save individual")
+            val individual = individual
+            if (individual != null) {
+                if (edit_name.text == null) {
+                    individual.name = "none";
                 } else {
-                    i.title = edit_title.text.toString()
+                    individual.name = edit_name.text.toString()
                 }
-                if (edit_producer.text == null) {
-                    i.producer = "none";
+                if (edit_age.text == null) {
+                    individual.age = "none";
                 } else {
-                    i.producer = edit_producer.text.toString();
+                    individual.age = edit_age.text.toString();
                 }
-                if (edit_description.text == null) {
-                    i.description = "none";
+                if (edit_hometown.text == null) {
+                    individual.hometown = "none";
                 } else {
-                    i.description = edit_description.text.toString();
+                    individual.hometown = edit_hometown.text.toString();
                 }
-                i.awardNominated = edit_awardNominated.isChecked;
-                i.releaseYear = edit_releaseDate.year;
-                viewModel.saveOrUpdateItem(i)
+                individual.isVaccinated = edit_isVaccinated.isChecked;
+                individual.yearOfBirth = edit_yearOfBirth.year;
+                viewModel.saveOrUpdateIndividual(individual)
             }
         }
 
     }
 
     private fun setupViewModel() {
-        viewModel = ViewModelProvider(this).get(ItemEditViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(IndividualEditViewModel::class.java)
         viewModel.fetching.observe(viewLifecycleOwner, { fetching ->
             Log.v(TAG, "update fetching")
             progress.visibility = if (fetching) View.VISIBLE else View.GONE
@@ -95,19 +95,19 @@ class ItemEditFragment : Fragment() {
                 findNavController().popBackStack()
             }
         })
-        val id = itemId
+        val id = individualId
         if (id == null) {
-            movie = Movie("", "", "", "", false, 0)
+            individual = Individual("", "", "", "", false, 0)
         } else {
-            viewModel.getItemById(id).observe(viewLifecycleOwner, {
-                Log.v(TAG, "update items")
-                if (it != null) {
-                    movie = it
-                    edit_title.setText(it.title)
-                    edit_producer.setText(it.producer)
-                    edit_description.setText(it.description)
-                    edit_awardNominated.isChecked = movie!!.awardNominated == true
-                    movie!!.releaseYear?.let { it1 -> edit_releaseDate.updateDate(it1,0, 1) }
+            viewModel.getIndividualById(id).observe(viewLifecycleOwner, { individual ->
+                Log.v(TAG, "update individuals")
+                if (individual != null) {
+                    this.individual = individual
+                    edit_name.setText(individual.name)
+                    edit_age.setText(individual.age)
+                    edit_hometown.setText(individual.hometown)
+                    edit_isVaccinated.isChecked = this.individual!!.isVaccinated == true
+                    this.individual!!.yearOfBirth?.let { individual1 -> edit_yearOfBirth.updateDate(individual1,0, 1) }
                 }
             })
         }

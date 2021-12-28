@@ -3,19 +3,19 @@ package ro.ubbcluj.cs.matei.individuals.todo.data
 import androidx.lifecycle.LiveData
 import androidx.work.*
 import ro.ubbcluj.cs.matei.individuals.MyWorker
-import ro.ubbcluj.cs.matei.individuals.todo.data.local.ItemDao
+import ro.ubbcluj.cs.matei.individuals.todo.data.local.IndividualDao
 import ro.ubbcluj.cs.matei.individuals.core.Result
-import ro.ubbcluj.cs.matei.individuals.todo.data.remote.ItemApi
+import ro.ubbcluj.cs.matei.individuals.todo.data.remote.IndividualApi
 
-class  ItemRepository(private val itemDao: ItemDao) {
+class  IndividualRepository(private val individualDao: IndividualDao) {
 
-    val items = itemDao.getAll()
+    val individuals = individualDao.getAll()
 
     suspend fun refresh(): Result<Boolean> {
         try {
-            val items = ItemApi.service.find()
+            val items = IndividualApi.service.find()
             for (item in items) {
-                itemDao.insert(item)
+                individualDao.insert(item)
             }
             return Result.Success(true)
         } catch(e: Exception) {
@@ -23,15 +23,15 @@ class  ItemRepository(private val itemDao: ItemDao) {
         }
     }
 
-    fun getById(itemId: String): LiveData<Movie> {
-        return itemDao.getById(itemId)
+    fun getById(individualId: String): LiveData<Individual> {
+        return individualDao.getById(individualId)
     }
 
-    suspend fun save(movie: Movie): Result<Movie> {
+    suspend fun save(individual: Individual): Result<Individual> {
         try {
-            val createdItem = ItemApi.service.create(movie)
-            itemDao.insert(createdItem)
-            return Result.Success(createdItem)
+            val createdIndividual = IndividualApi.service.create(individual)
+            individualDao.insert(createdIndividual)
+            return Result.Success(createdIndividual)
         } catch(e: Exception) {
             // here should add the worker
             val constraints = Constraints.Builder()
@@ -52,11 +52,11 @@ class  ItemRepository(private val itemDao: ItemDao) {
         }
     }
 
-    suspend fun update(movie: Movie): Result<Movie> {
+    suspend fun update(individual: Individual): Result<Individual> {
         try {
-            val updatedItem = ItemApi.service.update(movie._id, movie)
-            itemDao.update(updatedItem)
-            return Result.Success(updatedItem)
+            val updatedIndividual = IndividualApi.service.update(individual._id, individual)
+            individualDao.update(updatedIndividual)
+            return Result.Success(updatedIndividual)
         } catch(e: Exception) {
             return Result.Error(e)
         }
