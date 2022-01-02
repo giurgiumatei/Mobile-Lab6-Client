@@ -1,4 +1,4 @@
-package ro.ubbcluj.cs.matei.individuals.todo.item
+package ro.ubbcluj.cs.matei.individuals.todo.individual
 
 import android.os.Bundle
 import android.util.Log

@@ -13,7 +13,7 @@
 
     <fragment
         android:id="@+id/fragment_item_list"
-        android:name="ro.ubbcluj.cs.matei.individuals.todo.items.IndividualListFragment"
+        android:name="ro.ubbcluj.cs.matei.individuals.todo.individuals.IndividualListFragment"
         android:label="@string/item_list_fragment_label"
         tools:layout="@layout/fragment_individual_list">
 
@@ -23,7 +23,7 @@
     </fragment>
     <fragment
         android:id="@+id/fragment_individual_edit"
-        android:name="ro.ubbcluj.cs.matei.individuals.todo.item.IndividualEditFragment"
+        android:name="ro.ubbcluj.cs.matei.individuals.todo.individual.IndividualEditFragment"
         android:label="@string/item_edit_fragment_label"
         tools:layout="@layout/fragment_individual_edit">
 

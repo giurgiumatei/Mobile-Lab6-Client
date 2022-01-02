@@ -1,4 +1,4 @@
-package ro.ubbcluj.cs.matei.individuals.todo.items
+package ro.ubbcluj.cs.matei.individuals.todo.individuals
 
 import android.os.Bundle
 import android.util.Log
@@ -13,7 +13,7 @@ import kotlinx.android.synthetic.main.view_individual.view.*
 import ro.ubbcluj.cs.matei.individuals.R
 import ro.ubbcluj.cs.matei.individuals.core.TAG
 import ro.ubbcluj.cs.matei.individuals.todo.data.Individual
-import ro.ubbcluj.cs.matei.individuals.todo.item.IndividualEditFragment
+import ro.ubbcluj.cs.matei.individuals.todo.individual.IndividualEditFragment
 
 class IndividualListAdapter(
     private val fragment: Fragment
